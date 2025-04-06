@@ -30,6 +30,10 @@ const donationSchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
+	image: {
+		type: String,
+		default: null
+	},
 	donorToAdminMsg: String,
 	adminToAgentMsg: String,
 	collectionTime: {

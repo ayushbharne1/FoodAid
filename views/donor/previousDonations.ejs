@@ -2,40 +2,47 @@
 	<%- include('../partials/donorSidebar') %>
 	
 	<div id="main-wrapper">
-		
 		<div class="bg-white shadow-sm p-3">
 			<span class="me-3" id="sidebar-toggler-btn"><i class="fas fa-bars"></i></span>
 			<h5 class="m-0 color-theme d-inline-block">Previous Donations</h5>
 		</div>
 		
-		<div class="col col-sm-10 col-12 m-auto my-4" style="max-height: 75%; overflow: auto;">
-			<table class="table table-info table-striped table-hover m-0 bg-white">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Food type</th>
-						<th scope="col">Quantity</th>
-						<th scope="col">Status</th>
-						<th scope="col">Cooking Time</th>
-						<th scope="col">Agent assigned</th>
-						<th scope="col">Collection Time</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% for(let i=0; i<previousDonations.length; i++) { %>
-						<tr>
-							<th scope="row"> <%= i+1 %> </th>
-							<td> <%= previousDonations[i].foodType %> </td>
-							<td> <%= previousDonations[i].quantity %> </td>
-							<td class="fw-bold text-<%= previousDonations[i].status %>"> <%= previousDonations[i].status %> </td>
-							<td> <%= previousDonations[i].cookingTime.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short"}) %> </td>
-							<td> <%= previousDonations[i].agent.firstName + " " + previousDonations[i].agent.lastName %> </td>
-							<td> <%= previousDonations[i].collectionTime.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short"}) %> </td>
-						</tr>
-					<% } %>
-				</tbody>
-			</table>
+		<div class="container-fluid p-4">
+			<div class="row">
+				<% previousDonations.forEach(donation => { %>
+					<div class="col-md-6 col-lg-4 mb-4">
+						<div class="card h-100">
+							<% if(donation.image) { %>
+								<img src="<%= donation.image %>" class="card-img-top" alt="Food Image" style="height: 200px; object-fit: cover;">
+							<% } else { %>
+								<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+									<i class="fas fa-utensils fa-3x text-muted"></i>
+								</div>
+							<% } %>
+							<div class="card-body">
+								<h5 class="card-title"><%= donation.foodType %></h5>
+								<p class="card-text">
+									<strong>Quantity:</strong> <%= donation.quantity %><br>
+									<strong>Cooking Time:</strong> <%= new Date(donation.cookingTime).toLocaleString() %><br>
+									<strong>Collection Time:</strong> <%= new Date(donation.collectionTime).toLocaleString() %><br>
+									<strong>Status:</strong> 
+									<span class="badge bg-success">Collected</span>
+								</p>
+								<% if(donation.agent) { %>
+									<p class="card-text">
+										<strong>Collected by:</strong> <%= donation.agent.firstName %> <%= donation.agent.lastName %>
+									</p>
+								<% } %>
+								<% if(donation.donorToAdminMsg) { %>
+									<p class="card-text">
+										<strong>Your Message:</strong> <%= donation.donorToAdminMsg %>
+									</p>
+								<% } %>
+							</div>
+						</div>
+					</div>
+				<% }) %>
+			</div>
 		</div>
-		
 	</div>
 </main>
